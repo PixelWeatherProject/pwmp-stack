@@ -21,6 +21,19 @@ macro_rules! impl_simple_from {
     };
 }
 
+macro_rules! impl_simple_getter {
+    ($name: ident, $t: ty, $variant: ident) => {
+        #[must_use]
+        pub fn $name(self) -> Option<$t> {
+            if let Self::$variant(value) = self {
+                Some(value)
+            } else {
+                None
+            }
+        }
+    };
+}
+
 impl_simple_from!(u16, Number);
 impl_simple_from!(BigDecimal, Decimal);
 impl_simple_from!(bool, Boolean);
@@ -32,30 +45,8 @@ impl From<&str> for SettingValue {
 }
 
 impl SettingValue {
-    #[must_use]
-    pub fn as_number(self) -> Option<u16> {
-        if let Self::Number(value) = self {
-            Some(value)
-        } else {
-            None
-        }
-    }
-
-    #[must_use]
-    pub fn as_decimal(self) -> Option<BigDecimal> {
-        if let Self::Decimal(value) = self {
-            Some(value)
-        } else {
-            None
-        }
-    }
-
-    #[must_use]
-    pub fn as_text(self) -> Option<String> {
-        if let Self::Text(value) = self {
-            Some(value)
-        } else {
-            None
-        }
-    }
+    impl_simple_getter!(as_number, u16, Number);
+    impl_simple_getter!(as_decimal, BigDecimal, Decimal);
+    impl_simple_getter!(as_text, String, Text);
+    impl_simple_getter!(as_bool, bool, Boolean);
 }
