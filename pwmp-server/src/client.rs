@@ -60,7 +60,8 @@ impl Client {
         let message = Message::Response(resp);
         debug!(
             "{}: responding with {:?} ({} bytes)",
-            self.id(),
+            self.id
+                .map_or_else(|| self.mac().to_string(), |id| id.to_string()),
             message.response().unwrap(),
             message.size()
         );
