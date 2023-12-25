@@ -26,3 +26,4 @@ tokio = { version = "1.35.1", default-features = false, features = [
 always_cell = "0.1.0"
 time = { version = "0.3.31", default-features = false, features = ["macros"] }
 chrono = { version = "0.4.31", default-features = false, features = ["std", "clock"] }
+thiserror = "1.0.51"

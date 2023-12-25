@@ -1,6 +1,6 @@
 use std::{fmt::Display, io};
 
-#[derive(Debug)]
+#[derive(Debug, thiserror::Error)]
 pub enum Error {
     /// Failed to parse a `Message`
     MessageParse,
@@ -11,7 +11,7 @@ pub enum Error {
     /// Request was malformed or cannot be processed
     BadRequest,
     /// Generic I/O error
-    Io(io::Error),
+    Io(#[from] io::Error),
 }
 
 impl Display for Error {
@@ -26,11 +26,5 @@ impl Display for Error {
             Self::BadRequest => write!(f, "Malformed or unprocessable request"),
             Self::Io(why) => write!(f, "{why}"),
         }
-    }
-}
-
-impl From<io::Error> for Error {
-    fn from(value: io::Error) -> Self {
-        Self::Io(value)
     }
 }

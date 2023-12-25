@@ -5,3 +5,4 @@ edition = "2021"
 
 [dependencies]
 pwmp-types = { path = "../pwmp-types" }
+thiserror = "1.0.51"
