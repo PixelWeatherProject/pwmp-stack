@@ -22,3 +22,4 @@ db/init.sql
 # Private
 .env
 pwmp-server/default_config.yml
+db/init_own.sql
