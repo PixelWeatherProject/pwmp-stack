@@ -1,5 +1,6 @@
 #![allow(clippy::missing_panics_doc, clippy::missing_errors_doc)]
 use error::Error;
+pub use pwmp_types;
 use pwmp_types::{
     aliases::{AirPressure, Humidity, Temperature},
     datetime::DateTime,
