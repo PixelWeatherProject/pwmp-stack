@@ -26,6 +26,8 @@ fn main() {
 
     #[cfg(not(debug_assertions))]
     let logger = logger.with_level(log::LevelFilter::Info);
+    #[cfg(debug_assertions)]
+    let logger = logger.with_level(log::LevelFilter::Debug);
 
     logger.init().unwrap();
 
