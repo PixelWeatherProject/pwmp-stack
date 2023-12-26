@@ -7,7 +7,7 @@ CREATE TABLE devices (
 );
 CREATE TABLE measurements (
     id SMALLSERIAL PRIMARY KEY,
-    node INT2 NOT NULL REFERENCES devices(id),
+    node INT2 UNIQUE NOT NULL REFERENCES devices(id),
     "when" TIMESTAMP NOT NULL DEFAULT NOW(),
     temperature DECIMAL(4, 2) NOT NULL,
     humidity SMALLINT NOT NULL CHECK (
@@ -18,7 +18,7 @@ CREATE TABLE measurements (
 );
 CREATE TABLE settings (
     id SMALLSERIAL PRIMARY KEY,
-    node INT2 NOT NULL REFERENCES devices(id),
+    node INT2 UNIQUE NOT NULL REFERENCES devices(id),
     battery_ignore BOOLEAN NOT NULL DEFAULT FALSE,
     ota BOOLEAN NOT NULL DEFAULT FALSE,
     sleep_time INT2 NOT NULL DEFAULT 60 CHECK (sleep_time > 0),
