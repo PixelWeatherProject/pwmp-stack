@@ -17,6 +17,13 @@ CREATE TABLE measurements (
     air_pressure SMALLINT DEFAULT NULL,
     battery DECIMAL(3, 2) NOT NULL CHECK (battery > 0)
 );
+CREATE TABLE statistics (
+    id SMALLSERIAL PRIMARY KEY,
+    measurement INT2 NOT NULL REFERENCES measurements(id),
+    battery DECIMAL(3, 2) NOT NULL CHECK (battery > 0),
+    wifi_ssid VARCHAR(32) NOT NULL,
+    wifi_rssi INT2 NOT NULL
+);
 CREATE TABLE settings (
     id SMALLSERIAL PRIMARY KEY,
     node INT2 UNIQUE NOT NULL REFERENCES devices(id),
