@@ -19,12 +19,15 @@ static CONFIG: AlwaysCell<Config> = AlwaysCell::new();
 
 fn main() {
     let args = cli::Cli::parse();
-    SimpleLogger::new()
-        .with_timestamp_format(format_description!(
-            "[year]-[month]-[day] [hour]:[minute]:[second]"
-        ))
-        .init()
-        .unwrap();
+
+    let logger = SimpleLogger::new().with_timestamp_format(format_description!(
+        "[year]-[month]-[day] [hour]:[minute]:[second]"
+    ));
+
+    #[cfg(not(debug_assertions))]
+    let logger = logger.with_level(log::LevelFilter::Info);
+
+    logger.init().unwrap();
 
     info!("PixelWeather Server v{}", env!("CARGO_PKG_VERSION"));
     debug!("Arguments: {args:?}");
