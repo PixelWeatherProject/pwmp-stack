@@ -10,6 +10,8 @@ pub enum Error {
     NotHello,
     /// Request was malformed or cannot be processed
     BadRequest,
+    /// Connection closed unexpectedly
+    Quit,
     /// Generic I/O error
     Io(#[from] io::Error),
 }
@@ -24,6 +26,7 @@ impl Display for Error {
             ),
             Self::NotHello => write!(f, "Expected a `Hello` request"),
             Self::BadRequest => write!(f, "Malformed or unprocessable request"),
+            Self::Quit => write!(f, "Connection closed unexpectedly"),
             Self::Io(why) => write!(f, "{why}"),
         }
     }

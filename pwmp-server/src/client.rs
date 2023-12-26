@@ -82,6 +82,10 @@ impl Client {
 
     fn await_next_message(&mut self) -> Result<Message> {
         let read = self.socket.read(&mut self.buf)?;
+        if read == 0 {
+            return Err(Error::Quit);
+        }
+
         let message = Message::from_raw(&self.buf[..read]).ok_or(Error::MessageParse)?;
 
         Ok(message)
