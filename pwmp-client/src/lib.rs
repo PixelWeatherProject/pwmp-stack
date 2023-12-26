@@ -134,6 +134,11 @@ impl PwmpClient {
         Ok(dt)
     }
 
+    pub fn end(mut self) -> Result<()> {
+        self.send_request(Request::Bye)?;
+        Ok(())
+    }
+
     fn send_greeting(&mut self, mac: Mac) -> Result<()> {
         self.send_request(Request::Hello { mac })?;
         self.await_ok()
@@ -162,11 +167,5 @@ impl PwmpClient {
             Response::Reject => Err(Error::Rejected),
             _ => Err(Error::NotResponse),
         }
-    }
-}
-
-impl Drop for PwmpClient {
-    fn drop(&mut self) {
-        let _ = self.send_request(Request::Bye);
     }
 }
