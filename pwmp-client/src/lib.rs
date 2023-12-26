@@ -2,7 +2,7 @@
 use error::Error;
 pub use pwmp_types;
 use pwmp_types::{
-    aliases::{AirPressure, BatteryVoltage, Humidity, Temperature},
+    aliases::{AirPressure, BatteryVoltage, Humidity, Rssi, Temperature},
     datetime::DateTime,
     mac::Mac,
     multitype::SettingValue,
@@ -93,13 +93,30 @@ impl PwmpClient {
         temperature: Temperature,
         humidity: Humidity,
         air_pressure: Option<AirPressure>,
-        battery: BatteryVoltage,
     ) -> Result<()> {
         self.send_request(Request::PostResults {
             temperature,
             humidity,
             air_pressure,
+        })?;
+        self.await_ok()?;
+
+        Ok(())
+    }
+
+    /// Post node stats.
+    /// # Errors
+    /// Generic I/O.
+    pub fn post_stats(
+        &mut self,
+        battery: BatteryVoltage,
+        wifi_ssid: &str,
+        wifi_rssi: Rssi,
+    ) -> Result<()> {
+        self.send_request(Request::PostStats {
             battery,
+            wifi_ssid: wifi_ssid.to_string(),
+            wifi_rssi,
         })?;
         self.await_ok()?;
 

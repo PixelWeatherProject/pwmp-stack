@@ -1,7 +1,7 @@
 use crate::config::Config;
 use log::error;
 use pwmp_types::{
-    aliases::{AirPressure, BatteryVoltage, Humidity, Temperature},
+    aliases::{AirPressure, BatteryVoltage, Humidity, MeasurementId, Rssi, Temperature},
     mac::Mac,
     multitype::SettingValue,
     setting::SettingName,
@@ -128,16 +128,37 @@ impl DatabaseClient {
         temp: Temperature,
         hum: Humidity,
         air_p: Option<AirPressure>,
-        bat: BatteryVoltage,
+    ) -> MeasurementId {
+        self.rt()
+            .block_on(async {
+                sqlx::query_file!(
+                    "queries/post_results.sql",
+                    node,
+                    temp,
+                    hum as i16,
+                    air_p.map(|value| value as i16)
+                )
+                .fetch_one(self.pool())
+                .await
+                .unwrap()
+            })
+            .id as u16
+    }
+
+    pub fn post_stats(
+        &self,
+        measurement: MeasurementId,
+        battery: BatteryVoltage,
+        wifi_ssid: &str,
+        wifi_rssi: Rssi,
     ) {
         self.rt().block_on(async {
             sqlx::query_file!(
-                "queries/post_results.sql",
-                node,
-                temp,
-                hum as i16,
-                air_p.map(|value| value as i16),
-                bat
+                "queries/post_stats.sql",
+                measurement as i16,
+                battery,
+                wifi_ssid,
+                wifi_rssi as i16
             )
             .execute(self.pool())
             .await

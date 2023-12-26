@@ -1,5 +1,5 @@
 use crate::{
-    aliases::{AirPressure, BatteryVoltage, Humidity, Temperature},
+    aliases::{AirPressure, BatteryVoltage, Humidity, Rssi, Temperature},
     mac::Mac,
     setting::SettingName,
 };
@@ -15,7 +15,11 @@ pub enum Request {
         temperature: Temperature,
         humidity: Humidity,
         air_pressure: Option<AirPressure>,
+    },
+    PostStats {
         battery: BatteryVoltage,
+        wifi_ssid: String,
+        wifi_rssi: Rssi,
     },
     DateTime,
     Bye,
