@@ -7,7 +7,7 @@ CREATE TABLE devices (
 );
 CREATE TABLE measurements (
     id SMALLSERIAL PRIMARY KEY,
-    node INT2 UNIQUE NOT NULL REFERENCES devices(id),
+    node INT2 NOT NULL REFERENCES devices(id),
     "when" TIMESTAMP NOT NULL DEFAULT NOW(),
     temperature DECIMAL(4, 2) NOT NULL,
     humidity SMALLINT NOT NULL CHECK (
