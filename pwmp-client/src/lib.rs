@@ -2,7 +2,7 @@
 use error::Error;
 pub use pwmp_types;
 use pwmp_types::{
-    aliases::{AirPressure, Humidity, Temperature},
+    aliases::{AirPressure, BatteryVoltage, Humidity, Temperature},
     datetime::DateTime,
     mac::Mac,
     multitype::SettingValue,
@@ -93,11 +93,13 @@ impl PwmpClient {
         temperature: Temperature,
         humidity: Humidity,
         air_pressure: Option<AirPressure>,
+        battery: BatteryVoltage,
     ) -> Result<()> {
         self.send_request(Request::PostResults {
             temperature,
             humidity,
             air_pressure,
+            battery,
         })?;
         self.await_ok()?;
 

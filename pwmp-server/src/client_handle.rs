@@ -56,12 +56,13 @@ fn handle_request(req: Request, client: &Client, db: &DatabaseClient) -> Option<
             temperature,
             humidity,
             air_pressure,
+            battery,
         } => {
             debug!(
                 "{}: {temperature}C, {humidity}%, {air_pressure:?}hPa",
                 client.id()
             );
-            db.post_results(client.id(), temperature, humidity, air_pressure);
+            db.post_results(client.id(), temperature, humidity, air_pressure, battery);
             Some(Response::Ok)
         }
         Request::GetSetting(setting) => db.get_setting(client.id(), setting).map_or_else(

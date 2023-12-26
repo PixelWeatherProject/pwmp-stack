@@ -14,7 +14,8 @@ CREATE TABLE measurements (
         humidity >= 0
         AND humidity <= 100
     ),
-    air_pressure SMALLINT DEFAULT NULL
+    air_pressure SMALLINT DEFAULT NULL,
+    battery DECIMAL(3, 2) NOT NULL CHECK (battery > 0)
 );
 CREATE TABLE settings (
     id SMALLSERIAL PRIMARY KEY,

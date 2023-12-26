@@ -1,5 +1,5 @@
 use crate::{
-    aliases::{AirPressure, Humidity, Temperature},
+    aliases::{AirPressure, BatteryVoltage, Humidity, Temperature},
     mac::Mac,
     setting::SettingName,
 };
@@ -15,6 +15,7 @@ pub enum Request {
         temperature: Temperature,
         humidity: Humidity,
         air_pressure: Option<AirPressure>,
+        battery: BatteryVoltage,
     },
     DateTime,
     Bye,

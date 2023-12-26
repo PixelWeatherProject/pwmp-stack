@@ -1,7 +1,7 @@
 use crate::config::Config;
 use log::error;
 use pwmp_types::{
-    aliases::{AirPressure, Humidity, Temperature},
+    aliases::{AirPressure, BatteryVoltage, Humidity, Temperature},
     mac::Mac,
     multitype::SettingValue,
     setting::SettingName,
@@ -128,6 +128,7 @@ impl DatabaseClient {
         temp: Temperature,
         hum: Humidity,
         air_p: Option<AirPressure>,
+        bat: BatteryVoltage,
     ) {
         self.rt().block_on(async {
             sqlx::query_file!(
@@ -135,7 +136,8 @@ impl DatabaseClient {
                 node,
                 temp,
                 hum as i16,
-                air_p.map(|value| value as i16)
+                air_p.map(|value| value as i16),
+                bat
             )
             .execute(self.pool())
             .await
