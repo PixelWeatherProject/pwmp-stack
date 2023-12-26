@@ -1,6 +1,6 @@
 use crate::{client::Client, db::DatabaseClient, error::Error, CONFIG};
 use chrono::{Datelike, Local, Timelike};
-use log::{debug, error, warn};
+use log::{debug, error, info, warn};
 use pwmp_types::{
     aliases::MeasurementId,
     datetime::{Date, DateTime, Time},
@@ -14,7 +14,7 @@ pub fn handle_client(client: TcpStream, db: &DatabaseClient) -> Result<(), Error
     let mut client = Client::new(client)?;
 
     if let Some(id) = db.authorize_device(client.mac()) {
-        debug!("Device {} authorized as node #{id}", client.mac());
+        info!("Device {} authorized as node #{id}", client.mac());
         client.set_id(id);
         client.send_response(Response::Ok)?;
     } else {
@@ -31,7 +31,7 @@ pub fn handle_client(client: TcpStream, db: &DatabaseClient) -> Result<(), Error
         let request = client.await_request()?;
 
         if request == Request::Bye {
-            debug!("{}: Bye", client.id());
+            info!("{}: Bye", client.id());
             break;
         }
 
