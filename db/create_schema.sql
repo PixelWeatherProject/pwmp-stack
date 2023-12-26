@@ -3,7 +3,7 @@ CREATE TABLE devices (
     id SMALLSERIAL PRIMARY KEY,
     mac_address VARCHAR(17) UNIQUE NOT NULL CHECK (mac_address ~ E'^([0-9A-F]{2}:){5}[0-9A-F]{2}$'),
     location POINT DEFAULT NULL,
-    note VARCHAR(16) DEFAULT NULL,
+    note VARCHAR(16) DEFAULT NULL
 );
 CREATE TABLE measurements (
     id SMALLSERIAL PRIMARY KEY,
