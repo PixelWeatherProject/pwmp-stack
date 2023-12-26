@@ -18,6 +18,7 @@ Cargo.lock
 
 # For testing only
 db/init.sql
+.cargo
 
 # Private
 .env
