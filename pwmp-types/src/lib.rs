@@ -1,4 +1,5 @@
 #![allow(clippy::module_name_repetitions, clippy::missing_panics_doc)]
+pub use bigdecimal;
 use request::Request;
 use response::Response;
 use serde::{Deserialize, Serialize};
