@@ -4,11 +4,11 @@ use std::{fmt::Display, num::ParseIntError, str::FromStr};
 const MAC_STR_LEN: usize = "11:22:33:44:55:66".len();
 
 /// MAC address.
-#[derive(Debug, Serialize, Deserialize, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Eq)]
 pub struct Mac(u8, u8, u8, u8, u8, u8);
 
 /// MAC address parse error.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, PartialEq, Eq)]
 pub struct MacParseError;
 
 impl Mac {

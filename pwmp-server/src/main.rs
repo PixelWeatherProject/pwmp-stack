@@ -1,4 +1,8 @@
-#![allow(clippy::cast_sign_loss)]
+#![allow(
+    clippy::cast_sign_loss,
+    clippy::cast_possible_wrap,
+    clippy::cast_lossless
+)]
 use crate::{config::Config, db::DatabaseClient, server_handle::server_loop};
 use always_cell::AlwaysCell;
 use clap::Parser;

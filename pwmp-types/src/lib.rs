@@ -21,7 +21,7 @@ pub type NodeId = i16;
 
 /// A Message object.
 /// Can either be a request or a response.
-#[derive(Debug, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord, Clone)]
+#[derive(Debug, Serialize, Deserialize, PartialEq, Eq, Clone)]
 pub enum Message {
     /// Server requested data from a client or vice-versa.
     Request(request::Request),

@@ -43,8 +43,8 @@ impl Client {
         self.id = Some(id);
     }
 
-    pub fn mac(&self) -> Mac {
-        self.mac.unwrap()
+    pub fn mac(&self) -> &Mac {
+        self.mac.as_ref().unwrap()
     }
 
     pub fn peer_addr(&self) -> Option<SocketAddr> {

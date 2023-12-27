@@ -33,7 +33,7 @@ impl DatabaseClient {
         Ok(Self(rt, pool))
     }
 
-    pub fn authorize_device(&self, mac: Mac) -> Option<NodeId> {
+    pub fn authorize_device(&self, mac: &Mac) -> Option<NodeId> {
         let mac = mac.to_string();
 
         let result = self.rt().block_on(async {
@@ -148,7 +148,7 @@ impl DatabaseClient {
     pub fn post_stats(
         &self,
         measurement: MeasurementId,
-        battery: BatteryVoltage,
+        battery: &BatteryVoltage,
         wifi_ssid: &str,
         wifi_rssi: Rssi,
     ) {

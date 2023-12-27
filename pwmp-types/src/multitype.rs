@@ -3,11 +3,10 @@ use serde::{Deserialize, Serialize};
 
 /// A type that allows containing multiple data types.
 /// Used to represent node setting values.
-#[derive(Debug, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord, Clone)]
+#[derive(Debug, Serialize, Deserialize, PartialEq, Eq, Clone)]
 pub enum SettingValue {
     Number(u16),
     Decimal(BigDecimal),
-    Text(String),
     Boolean(bool),
 }
 
@@ -38,15 +37,8 @@ impl_simple_from!(u16, Number);
 impl_simple_from!(BigDecimal, Decimal);
 impl_simple_from!(bool, Boolean);
 
-impl From<&str> for SettingValue {
-    fn from(value: &str) -> Self {
-        Self::Text(value.to_string())
-    }
-}
-
 impl SettingValue {
     impl_simple_getter!(as_number, u16, Number);
     impl_simple_getter!(as_decimal, BigDecimal, Decimal);
-    impl_simple_getter!(as_text, String, Text);
     impl_simple_getter!(as_bool, bool, Boolean);
 }
