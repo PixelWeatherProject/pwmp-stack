@@ -3,7 +3,6 @@ use error::Error;
 pub use pwmp_types;
 use pwmp_types::{
     aliases::{AirPressure, BatteryVoltage, Humidity, Rssi, Temperature},
-    datetime::DateTime,
     mac::Mac,
     multitype::SettingValue,
     request::Request,
@@ -121,17 +120,6 @@ impl PwmpClient {
         self.await_ok()?;
 
         Ok(())
-    }
-
-    pub fn get_datetime(&mut self) -> Result<DateTime> {
-        self.send_request(Request::DateTime)?;
-        let response = self.await_response()?;
-
-        let Response::DateTime(dt) = response else {
-            return Err(Error::UnexpectedVariant);
-        };
-
-        Ok(dt)
     }
 
     fn send_greeting(&mut self, mac: Mac) -> Result<()> {

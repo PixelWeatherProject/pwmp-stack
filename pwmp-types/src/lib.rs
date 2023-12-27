@@ -5,7 +5,6 @@ use serde::{Deserialize, Serialize};
 
 /// Type aliases
 pub mod aliases;
-pub mod datetime;
 /// Contains the [`Mac`](mac::Mac) address type
 pub mod mac;
 /// Contains the [`SettingValue`](multitype::SettingValue) type

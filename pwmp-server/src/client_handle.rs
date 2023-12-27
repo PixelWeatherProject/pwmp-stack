@@ -1,13 +1,6 @@
 use crate::{client::Client, db::DatabaseClient, error::Error, CONFIG};
-use chrono::{Datelike, Local, Timelike};
 use log::{debug, error, info, warn};
-use pwmp_types::{
-    aliases::MeasurementId,
-    datetime::{Date, DateTime, Time},
-    request::Request,
-    response::Response,
-    Message,
-};
+use pwmp_types::{aliases::MeasurementId, request::Request, response::Response, Message};
 use std::net::TcpStream;
 
 pub fn handle_client(client: TcpStream, db: &DatabaseClient) -> Result<(), Error> {
@@ -128,18 +121,6 @@ fn handle_request(
             }
 
             Some(Response::Settings(results))
-        }
-        Request::DateTime => {
-            let now = Local::now();
-
-            Some(Response::DateTime(DateTime(
-                Date {
-                    year: now.year() as _,
-                    month: now.month() as _,
-                    day: now.day() as _,
-                },
-                Time(now.hour() as _, now.minute() as _, now.second() as _),
-            )))
         }
         Request::Bye => unreachable!(),
     }

@@ -21,7 +21,6 @@ pub enum Request {
         wifi_ssid: String,
         wifi_rssi: Rssi,
     },
-    DateTime,
     Bye,
     GetSetting(SettingName),
     GetSettings(Vec<SettingName>),
