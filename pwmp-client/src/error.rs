@@ -18,4 +18,7 @@ pub enum Error {
     /// Unexpected variant of a response or request.
     #[error("bad variant")]
     UnexpectedVariant,
+    /// Malformed response
+    #[error("malformed response")]
+    MalformedResponse,
 }

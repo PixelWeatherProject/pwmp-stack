@@ -10,7 +10,7 @@ fn main() {
         SettingName::Sbop,
         SettingName::MuteNotifications,
     ];
-    let values = client.get_settings(&settings).unwrap();
+    let values = client.get_settings(settings).unwrap();
 
     for i in 0..settings.len() {
         println!("{:?} => {:?}", settings[i], values[i]);

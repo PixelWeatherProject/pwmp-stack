@@ -22,6 +22,7 @@ type Result<T> = ::std::result::Result<T, Error>;
 /// Contains the [`Error`] type.
 pub mod error;
 
+#[allow(clippy::doc_markdown)]
 /// PixelWeather Messaging Protocol Client.
 pub struct PwmpClient(TcpStream);
 
@@ -74,7 +75,11 @@ impl PwmpClient {
     ///
     /// # Errors
     /// Generic I/O.
-    pub fn get_settings(&mut self, settings: &[SettingName]) -> Result<Vec<SettingValue>> {
+    #[allow(clippy::items_after_statements)]
+    pub fn get_settings<const N: usize>(
+        &mut self,
+        settings: [SettingName; N],
+    ) -> Result<[SettingValue; N]> {
         self.send_request(Request::GetSettings(settings.to_vec()))?;
         let response = self.await_response()?;
 
@@ -82,7 +87,18 @@ impl PwmpClient {
             return Err(Error::UnexpectedVariant);
         };
 
-        Ok(values)
+        if values.len() != N {
+            return Err(Error::MalformedResponse);
+        }
+
+        const ARRAY_REPEAT_VALUE: SettingValue = SettingValue::Number(0);
+        let mut array = [ARRAY_REPEAT_VALUE; N];
+
+        for (i, value) in values.into_iter().enumerate() {
+            array[i] = value;
+        }
+
+        Ok(array)
     }
 
     /// Post node measurements.
