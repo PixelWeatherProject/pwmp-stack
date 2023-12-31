@@ -33,3 +33,17 @@ CREATE TABLE settings (
     mute_notifications BOOLEAN NOT NULL DEFAULT FALSE,
     device_specific JSON NOT NULL DEFAULT '{}'::json
 );
+
+/* Web */
+CREATE TABLE web_users (
+    id SMALLSERIAL PRIMARY KEY,
+    username VARCHAR(16) NOT NULL CHECK (LENGTH(username) > 0),
+    password VARCHAR(16) NOT NULL CHECK (LENGTH(password) > 0),
+    is_admin BOOLEAN NOT NULL DEFAULT FALSE
+);
+CREATE TABLE web_sessions(
+    id SMALLSERIAL PRIMARY KEY,
+    "user" INT2 NOT NULL REFERENCES web_users(id),
+    token VARCHAR(16) NOT NULL CHECK (LENGTH(token) > 0),
+    expiry TIMESTAMP UNIQUE NOT NULL DEFAULT NOW() + INTERVAL '12 hours'
+);
