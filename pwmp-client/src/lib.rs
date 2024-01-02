@@ -80,7 +80,7 @@ impl PwmpClient {
         &mut self,
         settings: [SettingName; N],
     ) -> Result<[SettingValue; N]> {
-        self.send_request(Request::GetSettings(settings.to_vec()))?;
+        self.send_request(Request::GetSettings(settings.into()))?;
         let response = self.await_response()?;
 
         let Response::Settings(values) = response else {
@@ -94,7 +94,7 @@ impl PwmpClient {
         const ARRAY_REPEAT_VALUE: SettingValue = SettingValue::Number(0);
         let mut array = [ARRAY_REPEAT_VALUE; N];
 
-        for (i, value) in values.into_iter().enumerate() {
+        for (i, value) in values.iter().cloned().enumerate() {
             array[i] = value;
         }
 
@@ -131,7 +131,7 @@ impl PwmpClient {
     ) -> Result<()> {
         self.send_request(Request::PostStats {
             battery,
-            wifi_ssid: wifi_ssid.to_string(),
+            wifi_ssid: wifi_ssid.into(),
             wifi_rssi,
         })?;
         self.await_ok()?;

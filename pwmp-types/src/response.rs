@@ -7,5 +7,5 @@ pub enum Response {
     Ok,
     Reject,
     Setting(SettingValue),
-    Settings(Vec<SettingValue>),
+    Settings(Box<[SettingValue]>),
 }

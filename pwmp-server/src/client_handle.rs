@@ -120,7 +120,7 @@ fn handle_request(
                 results.push(result);
             }
 
-            Some(Response::Settings(results))
+            Some(Response::Settings(results.into_boxed_slice()))
         }
         Request::Bye => unreachable!(),
     }

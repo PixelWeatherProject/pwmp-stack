@@ -18,10 +18,10 @@ pub enum Request {
     },
     PostStats {
         battery: BatteryVoltage,
-        wifi_ssid: String,
+        wifi_ssid: Box<str>,
         wifi_rssi: Rssi,
     },
     Bye,
     GetSetting(SettingName),
-    GetSettings(Vec<SettingName>),
+    GetSettings(Box<[SettingName]>),
 }
