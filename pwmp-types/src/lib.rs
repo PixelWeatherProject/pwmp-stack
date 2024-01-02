@@ -1,11 +1,14 @@
 #![allow(clippy::module_name_repetitions, clippy::missing_panics_doc)]
-pub use bigdecimal;
 use request::Request;
 use response::Response;
 use serde::{Deserialize, Serialize};
 
+#[cfg(feature = "bigdecimal")]
+pub use bigdecimal;
+
 /// Type aliases
 pub mod aliases;
+pub mod decimal;
 /// Contains the [`Mac`](mac::Mac) address type
 pub mod mac;
 /// Contains the [`SettingValue`](multitype::SettingValue) type

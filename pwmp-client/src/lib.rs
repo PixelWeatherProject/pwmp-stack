@@ -1,7 +1,6 @@
 #![allow(clippy::missing_panics_doc, clippy::missing_errors_doc)]
 use error::Error;
 pub use pwmp_types;
-pub use pwmp_types::bigdecimal;
 use pwmp_types::{
     aliases::{AirPressure, BatteryVoltage, Humidity, Rssi, Temperature},
     mac::Mac,

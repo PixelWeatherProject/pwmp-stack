@@ -1,4 +1,4 @@
-use bigdecimal::BigDecimal;
+use crate::decimal::Decimal;
 use serde::{Deserialize, Serialize};
 
 /// A type that allows containing multiple data types.
@@ -6,7 +6,7 @@ use serde::{Deserialize, Serialize};
 #[derive(Debug, Serialize, Deserialize, PartialEq, Eq, Clone)]
 pub enum SettingValue {
     Number(u16),
-    Decimal(BigDecimal),
+    Decimal(Decimal),
     Boolean(bool),
 }
 
@@ -23,7 +23,7 @@ macro_rules! impl_simple_from {
 macro_rules! impl_simple_getter {
     ($name: ident, $t: ty, $variant: ident) => {
         #[must_use]
-        pub fn $name(self) -> Option<$t> {
+        pub const fn $name(self) -> Option<$t> {
             if let Self::$variant(value) = self {
                 Some(value)
             } else {
@@ -34,11 +34,11 @@ macro_rules! impl_simple_getter {
 }
 
 impl_simple_from!(u16, Number);
-impl_simple_from!(BigDecimal, Decimal);
+impl_simple_from!(Decimal, Decimal);
 impl_simple_from!(bool, Boolean);
 
 impl SettingValue {
     impl_simple_getter!(as_number, u16, Number);
-    impl_simple_getter!(as_decimal, BigDecimal, Decimal);
+    impl_simple_getter!(as_decimal, Decimal, Decimal);
     impl_simple_getter!(as_bool, bool, Boolean);
 }

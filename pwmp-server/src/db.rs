@@ -2,6 +2,7 @@ use crate::config::Config;
 use log::error;
 use pwmp_types::{
     aliases::{AirPressure, BatteryVoltage, Humidity, MeasurementId, Rssi, Temperature},
+    bigdecimal::BigDecimal,
     mac::Mac,
     multitype::SettingValue,
     setting::SettingName,
@@ -134,7 +135,7 @@ impl DatabaseClient {
                 sqlx::query_file!(
                     "queries/post_results.sql",
                     node,
-                    temp,
+                    Into::<BigDecimal>::into(temp),
                     hum as i16,
                     air_p.map(|value| value as i16)
                 )
@@ -148,7 +149,7 @@ impl DatabaseClient {
     pub fn post_stats(
         &self,
         measurement: MeasurementId,
-        battery: &BatteryVoltage,
+        battery: BatteryVoltage,
         wifi_ssid: &str,
         wifi_rssi: Rssi,
     ) {
@@ -156,7 +157,7 @@ impl DatabaseClient {
             sqlx::query_file!(
                 "queries/post_stats.sql",
                 measurement as i16,
-                battery,
+                Into::<BigDecimal>::into(battery),
                 wifi_ssid,
                 wifi_rssi as i16
             )
