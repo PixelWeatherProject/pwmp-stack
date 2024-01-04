@@ -6,12 +6,12 @@ use pwmp_types::mac::{Mac, MacParseError};
 fn mac_nth_octet() {
     let mac = Mac::new(1, 2, 3, 4, 5, 6);
 
-    assert_eq!(mac.nth_octet(0), 1);
-    assert_eq!(mac.nth_octet(1), 2);
-    assert_eq!(mac.nth_octet(2), 3);
-    assert_eq!(mac.nth_octet(3), 4);
-    assert_eq!(mac.nth_octet(4), 5);
-    assert_eq!(mac.nth_octet(5), 6);
+    assert_eq!(mac[0], 1);
+    assert_eq!(mac[1], 2);
+    assert_eq!(mac[2], 3);
+    assert_eq!(mac[3], 4);
+    assert_eq!(mac[4], 5);
+    assert_eq!(mac[5], 6);
 }
 
 #[test]
