@@ -10,7 +10,7 @@ pub mod aliases;
 pub mod mac;
 /// Contains the [`SettingValue`](multitype::SettingValue) type
 pub mod multitype;
-/// Contains the [`Request`]type and it's implementations
+/// Contains the [`Request`] type and it's implementations
 pub mod request;
 /// Contains the [`Response`] type and it's implementations
 pub mod response;
