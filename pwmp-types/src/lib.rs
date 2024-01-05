@@ -1,7 +1,8 @@
 #![allow(clippy::module_name_repetitions, clippy::missing_panics_doc)]
-pub use bigdecimal;
 use request::Request;
 use response::Response;
+pub use rust_decimal::Decimal;
+pub use rust_decimal_macros::dec;
 use serde::{Deserialize, Serialize};
 
 /// Type aliases
@@ -34,13 +35,13 @@ impl Message {
     /// Serialize the message into raw bytes.
     #[must_use]
     pub fn to_raw(self) -> Vec<u8> {
-        serde_cbor::to_vec(&self).unwrap()
+        bincode::serialize(&self).unwrap()
     }
 
     /// Deserialize a message from raw bytes.
     #[must_use]
     pub fn from_raw(bytes: &[u8]) -> Option<Self> {
-        serde_cbor::from_slice(bytes).ok()
+        bincode::deserialize(bytes).ok()
     }
 
     /// Returns a reference to the contained [`Request`].
@@ -91,11 +92,11 @@ impl Message {
     /// let ping = Message::Request(Request::Ping);
     /// let pong = Message::Response(Response::Pong);
     ///
-    /// assert_eq!(ping.size(), 14);
-    /// assert_eq!(pong.size(), 15);
+    /// assert_eq!(ping.size(), 8);
+    /// assert_eq!(pong.size(), 8);
     /// ```
     #[must_use]
     pub fn size(&self) -> usize {
-        serde_cbor::to_vec(self).unwrap().len()
+        bincode::serialized_size(self).unwrap() as usize
     }
 }
