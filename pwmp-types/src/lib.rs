@@ -1,4 +1,8 @@
-#![allow(clippy::module_name_repetitions, clippy::missing_panics_doc)]
+#![allow(
+    clippy::module_name_repetitions,
+    clippy::missing_panics_doc,
+    clippy::cast_possible_truncation
+)]
 use request::Request;
 use response::Response;
 pub use rust_decimal::Decimal;

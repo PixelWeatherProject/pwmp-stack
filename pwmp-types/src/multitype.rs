@@ -25,7 +25,7 @@ macro_rules! impl_simple_from {
 macro_rules! impl_simple_getter {
     ($name: ident, $t: ty, $variant: ident) => {
         #[must_use]
-        pub fn $name(self) -> Option<$t> {
+        pub const fn $name(self) -> Option<$t> {
             if let Self::$variant(value) = self {
                 Some(value)
             } else {
