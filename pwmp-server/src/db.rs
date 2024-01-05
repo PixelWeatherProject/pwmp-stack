@@ -7,7 +7,8 @@ use pwmp_types::{
     setting::SettingName,
     NodeId,
 };
-use sqlx::{postgres::PgPoolOptions, Pool, Postgres, Row};
+use sqlx::{postgres::PgPoolOptions, types::BigDecimal, Pool, Postgres, Row};
+use std::str::FromStr;
 use tokio::runtime::Runtime;
 
 pub struct DatabaseClient(Runtime, Pool<Postgres>);
@@ -129,12 +130,14 @@ impl DatabaseClient {
         hum: Humidity,
         air_p: Option<AirPressure>,
     ) -> MeasurementId {
+        let temp_decimal = BigDecimal::from_str(&temp.to_string()).unwrap();
+
         self.rt()
             .block_on(async {
                 sqlx::query_file!(
                     "queries/post_results.sql",
                     node,
-                    temp,
+                    temp_decimal,
                     hum as i16,
                     air_p.map(|value| value as i16)
                 )
@@ -152,11 +155,13 @@ impl DatabaseClient {
         wifi_ssid: &str,
         wifi_rssi: Rssi,
     ) {
+        let batt_decimal = BigDecimal::from_str(&battery.to_string()).unwrap();
+
         self.rt().block_on(async {
             sqlx::query_file!(
                 "queries/post_stats.sql",
                 measurement as i16,
-                battery,
+                batt_decimal,
                 wifi_ssid,
                 wifi_rssi as i16
             )

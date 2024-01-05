@@ -1,7 +1,8 @@
 #![allow(clippy::module_name_repetitions, clippy::missing_panics_doc)]
-pub use bigdecimal;
 use request::Request;
 use response::Response;
+pub use rust_decimal::Decimal;
+pub use rust_decimal_macros::dec;
 use serde::{Deserialize, Serialize};
 
 /// Type aliases
@@ -91,8 +92,8 @@ impl Message {
     /// let ping = Message::Request(Request::Ping);
     /// let pong = Message::Response(Response::Pong);
     ///
-    /// assert_eq!(ping.size(), 14);
-    /// assert_eq!(pong.size(), 15);
+    /// assert_eq!(ping.size(), 8);
+    /// assert_eq!(pong.size(), 8);
     /// ```
     #[must_use]
     pub fn size(&self) -> usize {

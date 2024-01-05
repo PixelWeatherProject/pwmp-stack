@@ -1,7 +1,6 @@
 #![allow(clippy::missing_panics_doc, clippy::missing_errors_doc)]
 use error::Error;
 pub use pwmp_types;
-pub use pwmp_types::bigdecimal;
 use pwmp_types::{
     aliases::{AirPressure, BatteryVoltage, Humidity, Rssi, Temperature},
     mac::Mac,
@@ -170,7 +169,11 @@ impl PwmpClient {
     }
 
     fn connected(&mut self) -> bool {
-        self.0.peek(&mut []).is_ok()
+        if let Ok(amount) = self.0.peek(&mut []) {
+            return amount > 0;
+        }
+
+        false
     }
 }
 

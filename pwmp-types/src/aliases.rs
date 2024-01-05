@@ -1,8 +1,8 @@
-use bigdecimal::BigDecimal;
+use rust_decimal::Decimal;
 
-pub type Temperature = BigDecimal;
+pub type Temperature = Decimal;
 pub type Humidity = u8;
 pub type AirPressure = u16;
-pub type BatteryVoltage = BigDecimal;
+pub type BatteryVoltage = Decimal;
 pub type MeasurementId = u16;
 pub type Rssi = i8;
