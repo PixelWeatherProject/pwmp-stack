@@ -3,21 +3,22 @@
     clippy::cast_possible_wrap,
     clippy::cast_lossless
 )]
-use crate::{config::Config, db::DatabaseClient, server_handle::server_loop};
+use crate::{
+    cli::Command,
+    server::{config::Config, server_main},
+    svcmgr::svcmgr_main,
+};
 use always_cell::AlwaysCell;
 use clap::Parser;
 use log::{debug, error, info};
 use simple_logger::SimpleLogger;
-use std::{net::TcpListener, process::exit};
+use std::process::exit;
 use time::macros::format_description;
 
 mod cli;
-mod client;
-mod client_handle;
-mod config;
-mod db;
 mod error;
-mod server_handle;
+mod server;
+mod svcmgr;
 
 static CONFIG: AlwaysCell<Config> = AlwaysCell::new();
 
@@ -50,18 +51,8 @@ fn main() {
     };
     AlwaysCell::<Config>::set(&CONFIG, config);
 
-    info!("Connecting to database at {}", CONFIG.db_host);
-    let Ok(db) = DatabaseClient::new(&CONFIG) else {
-        error!("Failed to connect to database");
-        exit(1);
-    };
-
-    let Ok(server) = TcpListener::bind(CONFIG.server_bind_addr()) else {
-        eprintln!("Failed to bind to {}", CONFIG.server_bind_addr());
-        exit(1);
-    };
-
-    info!("Server started on {}", CONFIG.server_bind_addr());
-
-    server_loop(&server, db);
+    match args.command {
+        Some(Command::Service { command }) => svcmgr_main(command),
+        None => server_main(),
+    }
 }

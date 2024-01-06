@@ -1,4 +1,4 @@
-use crate::config::Config;
+use super::config::Config;
 use log::error;
 use pwmp_types::{
     aliases::{AirPressure, BatteryVoltage, Humidity, MeasurementId, Rssi, Temperature},
