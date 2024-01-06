@@ -1,7 +1,8 @@
 #![allow(
     clippy::cast_sign_loss,
     clippy::cast_possible_wrap,
-    clippy::cast_lossless
+    clippy::cast_lossless,
+    clippy::module_name_repetitions
 )]
 use crate::{
     cli::Command,

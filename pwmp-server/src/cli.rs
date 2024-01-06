@@ -20,7 +20,7 @@ pub enum Command {
     },
 }
 
-#[derive(Debug, Subcommand)]
+#[derive(Debug, Subcommand, Clone, Copy)]
 pub enum ServiceCommand {
     /// Start the service
     Start,

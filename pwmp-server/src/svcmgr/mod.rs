@@ -1,7 +1,7 @@
 use self::{openrc::OpenRcManager, systemd::SystemdManager, traits::ServiceManager};
 use crate::cli::ServiceCommand;
 use log::{error, info, warn};
-use std::process::exit;
+use std::{io, process::exit};
 
 mod openrc;
 mod systemd;
@@ -18,58 +18,37 @@ pub fn svcmgr_main(cmd: ServiceCommand) {
             (false, _) => info!("Service is not installed"),
         },
         ServiceCommand::Install => {
-            if let Err(why) = manager.install() {
-                error!("Failed to install service: {why}");
-                exit(1);
-            }
-
-            info!("Service installed successfully");
+            perform_cmd(|| manager.install(), "install", "installed");
             warn!("The service must be enabled manually");
         }
         ServiceCommand::Uninstall => {
-            if let Err(why) = manager.uninstall() {
-                error!("Failed to uninstall service: {why}");
-                exit(1);
-            }
-
-            info!("Service uninstalled successfully");
+            perform_cmd(|| manager.uninstall(), "uninstall", "uninstalled");
         }
         ServiceCommand::Enable => {
-            if let Err(why) = manager.enable() {
-                error!("Failed to enable service: {why}");
-                exit(1);
-            }
-
-            info!("Service enabled successfully");
+            perform_cmd(|| manager.enable(), "enable", "enabled");
         }
         ServiceCommand::Disable => {
-            if let Err(why) = manager.disable() {
-                error!("Failed to disable service: {why}");
-                exit(1);
-            }
-
-            info!("Service disabled successfully");
+            perform_cmd(|| manager.disable(), "disable", "disabled");
         }
         ServiceCommand::Start => {
-            if let Err(why) = manager.start() {
-                error!("Failed to start service: {why}");
-                exit(1);
-            }
-
-            info!("Service started successfully");
+            perform_cmd(|| manager.start(), "start", "started");
         }
         ServiceCommand::Stop => {
-            if let Err(why) = manager.start() {
-                error!("Failed to stop service: {why}");
-                exit(1);
-            }
-
-            info!("Service stopped successfully");
+            perform_cmd(|| manager.stop(), "stop", "stopped");
         }
         ServiceCommand::Reinstall => {
             svcmgr_main(ServiceCommand::Reinstall);
         }
     }
+}
+
+fn perform_cmd<F: FnOnce() -> io::Result<()>>(func: F, action_name: &str, action_past: &str) {
+    if let Err(why) = func() {
+        error!("Failed to {action_name} service: {why}");
+        exit(1);
+    }
+
+    info!("Service {action_past} successfully");
 }
 
 fn detect_manager() -> Box<dyn ServiceManager> {
