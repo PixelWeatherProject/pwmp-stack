@@ -26,6 +26,10 @@ pub enum ServiceCommand {
     Start,
     /// Stop the service
     Stop,
+    /// Enable
+    Enable,
+    /// Disable
+    Disable,
     /// Install as service
     Install,
     /// Uninstall service
