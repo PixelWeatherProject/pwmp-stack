@@ -1,7 +1,7 @@
 use super::traits::ServiceManager;
 use log::{debug, error, info};
 use std::{
-    env::args,
+    env::current_exe,
     fs,
     io::{Error, Result},
     path::PathBuf,
@@ -90,13 +90,13 @@ impl ServiceManager for SystemdManager {
 
     fn install(&self) -> Result<()> {
         let user = get_user_by_uid(get_current_uid()).unwrap();
-        let this_exec = args().next().unwrap();
+        let this_exec = current_exe().unwrap();
 
         let svcfile_path = Self::full_service_path();
         let svcfile = format!(
             include_str!("templates/systemd.service"),
             user = user.name().to_string_lossy(),
-            exec = this_exec
+            exec = this_exec.display()
         );
 
         info!(
