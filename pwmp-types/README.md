@@ -28,8 +28,6 @@ graph TD;
     Response-.->Reject
     Response-.->Setting
     Response-.->Settings
-
-    Ping-.-Pong
 ```
 
 # Example communication sequence
