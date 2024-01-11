@@ -50,6 +50,18 @@ impl DatabaseClient {
         }
     }
 
+    pub fn create_notification(&self, id: NodeId, content: &str) {
+        let result = self.rt().block_on(async {
+            sqlx::query_file!("queries/create_notification.sql", id, content)
+                .execute(self.pool())
+                .await
+        });
+
+        if let Err(why) = result {
+            error!("Failed to create notification: {why}");
+        }
+    }
+
     pub fn get_setting(&self, id: NodeId, setting: SettingName) -> Option<SettingValue> {
         let name = setting.name();
         let query = format!("SELECT {name} FROM settings WHERE node = $1");

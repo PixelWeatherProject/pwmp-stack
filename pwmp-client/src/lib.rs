@@ -138,6 +138,14 @@ impl PwmpClient {
         Ok(())
     }
 
+    pub fn send_notification(&mut self, content: &str) -> Result<()> {
+        assert!(content.len() <= 64, "Message content too large");
+        self.send_request(Request::SendNotification(content.into()))?;
+        self.await_ok()?;
+
+        Ok(())
+    }
+
     fn send_greeting(&mut self, mac: Mac) -> Result<()> {
         self.send_request(Request::Hello { mac })?;
         self.await_ok()

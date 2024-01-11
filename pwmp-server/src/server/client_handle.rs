@@ -88,6 +88,10 @@ fn handle_request(
             db.post_stats(*last_measurement_id, battery, &wifi_ssid, wifi_rssi);
             Some(Response::Ok)
         }
+        Request::SendNotification(message) => {
+            db.create_notification(client.id(), &message);
+            Some(Response::Ok)
+        }
         Request::GetSetting(setting) => db.get_setting(client.id(), setting).map_or_else(
             || {
                 let default = setting.default_value();

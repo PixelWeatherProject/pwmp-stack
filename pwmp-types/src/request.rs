@@ -21,6 +21,7 @@ pub enum Request {
         wifi_ssid: Box<str>,
         wifi_rssi: Rssi,
     },
+    SendNotification(Box<str>),
     Bye,
     GetSetting(SettingName),
     GetSettings(Box<[SettingName]>),

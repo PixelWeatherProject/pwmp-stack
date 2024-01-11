@@ -33,7 +33,12 @@ CREATE TABLE settings (
     mute_notifications BOOLEAN NOT NULL DEFAULT FALSE,
     device_specific JSON NOT NULL DEFAULT '{}'::json
 );
-
+CREATE TABLE notifications (
+    id SMALLSERIAL PRIMARY KEY,
+    node INT2 UNIQUE NOT NULL REFERENCES devices(id),
+    content VARCHAR(64) NOT NULL,
+    read BOOLEAN NOT NULL DEFAULT FALSE
+);
 /* Web */
 CREATE TABLE web_users (
     id SMALLSERIAL PRIMARY KEY,
