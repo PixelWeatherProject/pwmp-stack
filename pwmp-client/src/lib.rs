@@ -13,9 +13,13 @@ use pwmp_types::{
 use std::{
     io::{Read, Write},
     net::{TcpStream, ToSocketAddrs},
+    time::Duration,
 };
 
-const RCV_BUFFER_SIZE: usize = 128;
+const RCV_BUFFER_SIZE: usize = 96;
+const CONNECT_TIMEOUT: Duration = Duration::from_secs(3);
+const READ_TIMEOUT: Duration = Duration::from_secs(4);
+const WRITE_TIMEOUT: Duration = Duration::from_secs(4);
 type Result<T> = ::std::result::Result<T, Error>;
 
 /// Contains the [`Error`] type.
@@ -32,9 +36,13 @@ impl PwmpClient {
     /// an `Err(Error::Reject)` is returned. An error is also returned
     /// if a generic I/O error occurred.
     pub fn new<A: ToSocketAddrs>(addr: A, mac: Mac) -> Result<Self> {
-        let socket = TcpStream::connect(addr)?;
-        let mut client = Self(socket);
+        let addr = addr.to_socket_addrs()?.next().unwrap();
+        let socket = TcpStream::connect_timeout(&addr, CONNECT_TIMEOUT)?;
 
+        socket.set_read_timeout(Some(READ_TIMEOUT))?;
+        socket.set_write_timeout(Some(WRITE_TIMEOUT))?;
+
+        let mut client = Self(socket);
         client.send_greeting(mac)?;
 
         Ok(client)
