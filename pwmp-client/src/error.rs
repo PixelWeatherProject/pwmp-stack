@@ -4,7 +4,7 @@ use std::io;
 #[derive(Debug, thiserror::Error)]
 pub enum Error {
     /// Generic I/O error.
-    #[error("generic i/o error")]
+    #[error("I/O error: {0}")]
     Io(#[from] io::Error),
     /// Server rejected the client.
     #[error("server rejected")]
