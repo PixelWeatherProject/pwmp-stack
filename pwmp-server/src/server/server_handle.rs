@@ -41,7 +41,7 @@ pub fn server_loop(server: &TcpListener, db: DatabaseClient) {
             thread::spawn(move || {
                 debug!("New client: {}", peer_addr);
 
-                match handle_client(client, &db) {
+                match handle_client(client, &db, connections.clone()) {
                     Ok(()) => {
                         debug!("{}: Handled successfully", peer_addr);
                     }

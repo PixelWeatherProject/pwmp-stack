@@ -2,9 +2,21 @@ use super::{client::Client, db::DatabaseClient};
 use crate::{error::Error, CONFIG};
 use log::{debug, error, info, warn};
 use pwmp_types::{aliases::MeasurementId, request::Request, response::Response, Message};
-use std::net::TcpStream;
+use std::{
+    net::TcpStream,
+    panic,
+    sync::{
+        atomic::{AtomicU32, Ordering},
+        Arc,
+    },
+};
 
-pub fn handle_client(client: TcpStream, db: &DatabaseClient) -> Result<(), Error> {
+pub fn handle_client(
+    client: TcpStream,
+    db: &DatabaseClient,
+    connection_count: Arc<AtomicU32>,
+) -> Result<(), Error> {
+    set_panic_hook(connection_count);
     let mut client = Client::new(client)?;
 
     if let Some(id) = db.authorize_device(client.mac()) {
@@ -129,4 +141,14 @@ fn handle_request(
         }
         Request::Bye => unreachable!(),
     }
+}
+
+fn set_panic_hook(connection_count: Arc<AtomicU32>) {
+    let default = panic::take_hook();
+
+    panic::set_hook(Box::new(move |panic_info| {
+        warn!("A client thread has paniced");
+        default(panic_info);
+        connection_count.fetch_sub(1, Ordering::Relaxed);
+    }));
 }
