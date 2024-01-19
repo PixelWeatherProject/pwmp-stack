@@ -1299,7 +1299,7 @@ dependencies = [
 
 [[package]]
 name = "pwmp-client"
-version = "1.0.8"
+version = "1.0.9"
 dependencies = [
  "pwmp-types",
  "thiserror",
@@ -1307,7 +1307,7 @@ dependencies = [
 
 [[package]]
 name = "pwmp-server"
-version = "1.0.8"
+version = "1.0.9"
 dependencies = [
  "always_cell",
  "clap",
@@ -1326,7 +1326,7 @@ dependencies = [
 
 [[package]]
 name = "pwmp-types"
-version = "1.0.8"
+version = "1.0.9"
 dependencies = [
  "bincode",
  "rust_decimal",
