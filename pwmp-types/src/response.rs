@@ -6,6 +6,5 @@ pub enum Response {
     Pong,
     Ok,
     Reject,
-    Setting(SettingValue),
     Settings(Box<[SettingValue]>),
 }
