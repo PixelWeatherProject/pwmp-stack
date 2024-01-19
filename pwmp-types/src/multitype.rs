@@ -1,5 +1,3 @@
-#[cfg(feature = "bigdecimal")]
-use bigdecimal::BigDecimal;
 use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
 
@@ -43,12 +41,4 @@ impl SettingValue {
     impl_simple_getter!(as_number, u16, Number);
     impl_simple_getter!(as_decimal, Decimal, Decimal);
     impl_simple_getter!(as_bool, bool, Boolean);
-
-    #[cfg(feature = "bigdecimal")]
-    pub fn as_bigdecimal(self) -> Option<BigDecimal> {
-        use std::str::FromStr;
-
-        let dec = self.as_decimal()?;
-        BigDecimal::from_str(&dec.to_string()).ok()
-    }
 }
