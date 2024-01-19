@@ -62,38 +62,6 @@ impl DatabaseClient {
         }
     }
 
-    pub fn get_setting(&self, id: NodeId, setting: SettingName) -> Option<SettingValue> {
-        let name = setting.name();
-        let query = format!("SELECT {name} FROM settings WHERE node = $1");
-
-        let result = self
-            .rt()
-            .block_on(async { sqlx::query(&query).bind(id).fetch_one(self.pool()).await });
-
-        if let Err(why) = result {
-            match why {
-                sqlx::Error::RowNotFound => {
-                    return None;
-                }
-                why => {
-                    error!("Failed to fetch setting {setting:?} for node {id}: {why}");
-                    return None;
-                }
-            }
-        }
-
-        let row = result.unwrap();
-        let value = match setting {
-            SettingName::BatteryIgnore
-            | SettingName::Ota
-            | SettingName::Sbop
-            | SettingName::MuteNotifications => row.get::<bool, _>(0).into(),
-            SettingName::SleepTime => (row.get::<i16, _>(0) as u16).into(),
-        };
-
-        Some(value)
-    }
-
     pub fn get_settings(&self, id: NodeId, settings: &[SettingName]) -> Vec<Option<SettingValue>> {
         let columns = settings
             .iter()

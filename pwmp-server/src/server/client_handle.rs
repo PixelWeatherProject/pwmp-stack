@@ -104,17 +104,6 @@ fn handle_request(
             db.create_notification(client.id(), &message);
             Some(Response::Ok)
         }
-        Request::GetSetting(setting) => db.get_setting(client.id(), setting).map_or_else(
-            || {
-                let default = setting.default_value();
-                warn!(
-                    "{}: {setting:?} is not set, returning default {default:?}",
-                    client.id()
-                );
-                Some(Response::Setting(default))
-            },
-            |value| Some(Response::Setting(value)),
-        ),
         Request::GetSettings(settings) => {
             let values = db.get_settings(client.id(), &settings);
             let mut results = Vec::with_capacity(values.len());

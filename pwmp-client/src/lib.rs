@@ -62,23 +62,7 @@ impl PwmpClient {
         response == Response::Pong
     }
 
-    /// Get a setting value.
-    /// # Errors
-    /// Generic I/O.
-    pub fn get_setting(&mut self, setting: SettingName) -> Result<SettingValue> {
-        self.send_request(Request::GetSetting(setting))?;
-        let response = self.await_response()?;
-
-        let Response::Setting(value) = response else {
-            return Err(Error::UnexpectedVariant);
-        };
-
-        Ok(value)
-    }
-
     /// Get values of multiple settings.
-    ///
-    /// **Note:** This does not call [`get_setting()`](Self::get_setting) in a loop.
     ///
     /// # Errors
     /// Generic I/O.
