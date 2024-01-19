@@ -89,7 +89,6 @@ impl DatabaseClient {
             | SettingName::Sbop
             | SettingName::MuteNotifications => row.get::<bool, _>(0).into(),
             SettingName::SleepTime => (row.get::<i16, _>(0) as u16).into(),
-            SettingName::DeviceSpecific => unimplemented!(),
         };
 
         Some(value)
@@ -120,7 +119,6 @@ impl DatabaseClient {
                     | SettingName::Sbop
                     | SettingName::MuteNotifications => row.get::<bool, _>(i).into(),
                     SettingName::SleepTime => (row.get::<i16, _>(i) as u16).into(),
-                    SettingName::DeviceSpecific => unimplemented!(),
                 };
 
                 results[i] = Some(value);

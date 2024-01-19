@@ -14,10 +14,6 @@ pub enum SettingName {
     Sbop,
     /// Wheter to mute all notifications.
     MuteNotifications,
-    /// Device specific.
-    ///
-    /// **Not implemented yet.**
-    DeviceSpecific,
 }
 
 impl SettingName {
@@ -30,7 +26,6 @@ impl SettingName {
             Self::SleepTime => "sleep_time",
             Self::Sbop => "sbop",
             Self::MuteNotifications => "mute_notifications",
-            Self::DeviceSpecific => "device_specific",
         }
     }
 
@@ -41,7 +36,6 @@ impl SettingName {
             Self::BatteryIgnore | Self::Ota | Self::MuteNotifications => false.into(),
             Self::SleepTime => 60.into(),
             Self::Sbop => true.into(),
-            Self::DeviceSpecific => unimplemented!(),
         }
     }
 }
