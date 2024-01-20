@@ -1,6 +1,6 @@
 use super::{client::Client, db::DatabaseClient, rate_limit::RateLimiter};
 use crate::{error::Error, CONFIG};
-use log::{debug, error, info, warn};
+use log::{debug, error, warn};
 use pwmp_types::{aliases::MeasurementId, request::Request, response::Response, Message};
 use std::{
     net::TcpStream,
@@ -25,7 +25,7 @@ pub fn handle_client(
     );
 
     if let Some(id) = db.authorize_device(client.mac()) {
-        info!("Device {} authorized as node #{id}", client.mac());
+        debug!("Device {} authorized as node #{id}", client.mac());
         client.set_id(id);
         client.send_response(Response::Ok)?;
     } else {
@@ -47,7 +47,7 @@ pub fn handle_client(
         }
 
         if request == Request::Bye {
-            info!("{}: Bye", client.id());
+            debug!("{}: Bye", client.id());
             break;
         }
 
