@@ -4,32 +4,60 @@ use std::{
     path::PathBuf,
 };
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct Config {
+    pub server: ServerConfig,
+    pub database: DatabaseConfig,
+    pub limits: LimitsConfig,
+    pub kick_unauthorized_devices: bool,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct ServerConfig {
     pub host: Ipv4Addr,
     pub port: u16,
-    pub db_host: String,
-    pub db_port: u16,
-    pub db_user: String,
-    pub db_password: String,
-    pub db_name: String,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct DatabaseConfig {
+    pub host: Box<str>,
+    pub port: u16,
+    pub user: Box<str>,
+    pub password: Box<str>,
+    pub name: Box<str>,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct LimitsConfig {
     pub max_devices: u32,
-    pub kick_unauthorized_devices: bool,
     pub max_settings: u32,
 }
 
-impl Default for Config {
+impl Default for ServerConfig {
     fn default() -> Self {
         Self {
             host: Ipv4Addr::new(0, 0, 0, 0),
             port: 55300,
-            db_host: "192.168.0.12".to_string(),
-            db_port: 5432,
-            db_user: "root".to_string(),
-            db_password: "root".to_string(),
-            db_name: "pixelweather".to_string(),
+        }
+    }
+}
+
+impl Default for DatabaseConfig {
+    fn default() -> Self {
+        Self {
+            host: "192.168.0.12".into(),
+            port: 5432,
+            user: "root".into(),
+            password: "root".into(),
+            name: "pixelweather".into(),
+        }
+    }
+}
+
+impl Default for LimitsConfig {
+    fn default() -> Self {
+        Self {
             max_devices: 10,
-            kick_unauthorized_devices: false,
             max_settings: 10,
         }
     }
@@ -44,6 +72,6 @@ impl Config {
     }
 
     pub const fn server_bind_addr(&self) -> SocketAddrV4 {
-        SocketAddrV4::new(self.host, self.port)
+        SocketAddrV4::new(self.server.host, self.server.port)
     }
 }

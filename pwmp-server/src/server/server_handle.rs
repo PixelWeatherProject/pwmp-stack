@@ -15,7 +15,7 @@ pub fn server_loop(server: &TcpListener, db: DatabaseClient) {
     let shared_db = Arc::new(db);
 
     for client in server.incoming() {
-        if connections.load(Ordering::Relaxed) == CONFIG.max_devices {
+        if connections.load(Ordering::Relaxed) == CONFIG.limits.max_devices {
             warn!("Maximum number of connections reached, ignoring connection");
             continue;
         }
@@ -30,7 +30,7 @@ pub fn server_loop(server: &TcpListener, db: DatabaseClient) {
         };
 
         connections.fetch_add(1, Ordering::Relaxed);
-        if connections.load(Ordering::Relaxed) == CONFIG.max_devices {
+        if connections.load(Ordering::Relaxed) == CONFIG.limits.max_devices {
             warn!("Reached maximum number of connections, new connections will be blocked");
         }
 

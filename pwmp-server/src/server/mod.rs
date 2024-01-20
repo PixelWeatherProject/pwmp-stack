@@ -12,7 +12,7 @@ pub mod db;
 pub mod server_handle;
 
 pub fn server_main() {
-    info!("Connecting to database at {}", CONFIG.db_host);
+    info!("Connecting to database at {}", CONFIG.database.host);
     let Ok(db) = DatabaseClient::new(&CONFIG) else {
         error!("Failed to connect to database");
         exit(1);

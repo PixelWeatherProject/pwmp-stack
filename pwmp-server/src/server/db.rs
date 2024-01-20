@@ -22,11 +22,11 @@ impl DatabaseClient {
                 .max_connections(3)
                 .connect(&format!(
                     "postgres://{}:{}@{}:{}/{}",
-                    config.db_user,
-                    config.db_password,
-                    config.db_host,
-                    config.db_port,
-                    config.db_name
+                    config.database.user,
+                    config.database.password,
+                    config.database.host,
+                    config.database.port,
+                    config.database.name
                 ))
                 .await
         })?;
