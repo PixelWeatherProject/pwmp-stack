@@ -13,7 +13,6 @@ pub struct Config {
     pub db_user: String,
     pub db_password: String,
     pub db_name: String,
-    //pub anonymous_devices: bool,
     pub max_devices: u32,
     pub kick_unauthorized_devices: bool,
     pub max_settings: u32,
@@ -29,9 +28,8 @@ impl Default for Config {
             db_user: "root".to_string(),
             db_password: "root".to_string(),
             db_name: "pixelweather".to_string(),
-            //anonymous_devices: false,
             max_devices: 10,
-            kick_unauthorized_devices: true,
+            kick_unauthorized_devices: false,
             max_settings: 10,
         }
     }
