@@ -10,6 +10,7 @@ pub struct Config {
     pub database: DatabaseConfig,
     pub limits: LimitsConfig,
     pub kick_unauthorized_devices: bool,
+    pub rate_limits: RateLimitConfig,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -31,6 +32,23 @@ pub struct DatabaseConfig {
 pub struct LimitsConfig {
     pub max_devices: u32,
     pub max_settings: u32,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct RateLimitConfig {
+    pub time_frame: u64,
+    pub max_requests: usize,
+    pub max_connections: usize,
+}
+
+impl Default for RateLimitConfig {
+    fn default() -> Self {
+        Self {
+            time_frame: 1,
+            max_requests: 4,
+            max_connections: 4,
+        }
+    }
 }
 
 impl Default for ServerConfig {

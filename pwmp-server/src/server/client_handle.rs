@@ -1,4 +1,4 @@
-use super::{client::Client, db::DatabaseClient};
+use super::{client::Client, db::DatabaseClient, rate_limit::RateLimiter};
 use crate::{error::Error, CONFIG};
 use log::{debug, error, info, warn};
 use pwmp_types::{aliases::MeasurementId, request::Request, response::Response, Message};
@@ -9,6 +9,7 @@ use std::{
         atomic::{AtomicU32, Ordering},
         Arc,
     },
+    time::Duration,
 };
 
 pub fn handle_client(
@@ -18,6 +19,10 @@ pub fn handle_client(
 ) -> Result<(), Error> {
     set_panic_hook(connection_count);
     let mut client = Client::new(client)?;
+    let mut rate_limiter = RateLimiter::new(
+        Duration::from_secs(CONFIG.rate_limits.time_frame),
+        CONFIG.rate_limits.max_requests,
+    );
 
     if let Some(id) = db.authorize_device(client.mac()) {
         info!("Device {} authorized as node #{id}", client.mac());
@@ -35,6 +40,11 @@ pub fn handle_client(
 
     loop {
         let request = client.await_request()?;
+
+        if rate_limiter.hit() {
+            error!("{}: Exceeded request limits", client.id());
+            break;
+        }
 
         if request == Request::Bye {
             info!("{}: Bye", client.id());

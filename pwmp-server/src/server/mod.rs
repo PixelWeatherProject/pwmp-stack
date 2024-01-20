@@ -9,6 +9,7 @@ mod client;
 mod client_handle;
 pub mod config;
 pub mod db;
+pub mod rate_limit;
 pub mod server_handle;
 
 pub fn server_main() {

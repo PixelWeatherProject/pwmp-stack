@@ -1,4 +1,4 @@
-use super::db::DatabaseClient;
+use super::{db::DatabaseClient, rate_limit::RateLimiter};
 use crate::{server::client_handle::handle_client, CONFIG};
 use log::{debug, error, warn};
 use std::{
@@ -8,15 +8,25 @@ use std::{
         Arc,
     },
     thread,
+    time::Duration,
 };
 
 pub fn server_loop(server: &TcpListener, db: DatabaseClient) {
     let connections = Arc::new(AtomicU32::new(0));
     let shared_db = Arc::new(db);
+    let mut rate_limiter = RateLimiter::new(
+        Duration::from_secs(CONFIG.rate_limits.time_frame),
+        CONFIG.rate_limits.max_connections,
+    );
 
     for client in server.incoming() {
         if connections.load(Ordering::Relaxed) == CONFIG.limits.max_devices {
             warn!("Maximum number of connections reached, ignoring connection");
+            continue;
+        }
+
+        if rate_limiter.hit() {
+            warn!("Rate limiting");
             continue;
         }
 
