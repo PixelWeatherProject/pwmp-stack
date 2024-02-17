@@ -30,9 +30,7 @@ pub fn handle_client(
         client.send_response(Response::Ok)?;
     } else {
         warn!("Device {} is not authorized", client.mac());
-        if !CONFIG.kick_unauthorized_devices {
-            client.send_response(Response::Reject)?;
-        }
+        client.send_response(Response::Reject)?;
         return Ok(());
     }
 

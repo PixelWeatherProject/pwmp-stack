@@ -22,11 +22,6 @@ db_name: "pixelweather"
 # This limit cannot be disabled.
 max_devices: 10
 
-# Sets how the server will handle unauthorized devices when anonymous_devices is set to false.
-# If set to true, the server will not respond to the device and will just close the socket.
-# If set to false, the server will respond with a `Reject` message and then close the socket.
-kick_unauthorized_devices: false
-
 # Sets how many settings can be requested using the `Message::GetSettings` message.
 # This limit cannot be disabled.
 max_settings: 10

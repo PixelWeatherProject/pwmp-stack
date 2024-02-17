@@ -9,7 +9,6 @@ pub struct Config {
     pub server: ServerConfig,
     pub database: DatabaseConfig,
     pub limits: LimitsConfig,
-    pub kick_unauthorized_devices: bool,
     pub rate_limits: RateLimitConfig,
 }
 
