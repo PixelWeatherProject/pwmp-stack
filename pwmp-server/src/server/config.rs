@@ -9,6 +9,7 @@ pub struct Config {
     pub server: ServerConfig,
     pub database: DatabaseConfig,
     pub limits: LimitsConfig,
+    #[serde(rename = "rate_limiter")]
     pub rate_limits: RateLimitConfig,
 }
 
