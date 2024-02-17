@@ -28,12 +28,30 @@ max_settings: 10
 ```
 
 # Using as a service
-The server can be configured as a background service. The CLI has a `service` subcommand, which allows managing said service.
+The CLI has a `service` subcommand, which allows managing a background service.
 
-Service management is only supported on **Linux** systems using **Systemd**. There is a boilerplate implementation for **OpenRC**, but it's not supported yet.
+```
+$ pwmp-server service help
+Service management
 
-The service command can be used to:
-- Install and uninstall the service
-- Enable/disable the service on boot
-- Check the status of the service
-- Start/stop the service
+Usage: pwmp-server service <COMMAND>
+
+Commands:
+  start      Start the service
+  stop       Stop the service
+  enable     Enable
+  disable    Disable
+  install    Install as service
+  uninstall  Uninstall service
+  check      Check if service is installed
+  reinstall  Reinstall service
+```
+
+Service management is only supported on **Linux** systems with **Systemd**. There is a boilerplate implementation for **OpenRC**, but it's not supported yet.
+
+TODO:
+- [x] Add support for Systemd services
+- [ ] Add support for OpenRC services
+- [ ] Add support for macOS Homebrew services
+
+Service management on Windows is **not** and **will not** be supported.

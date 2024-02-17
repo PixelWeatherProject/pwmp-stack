@@ -5,7 +5,9 @@ This repo contains:
 - [PWMP Client library](pwmp-client/)
 
 # Protocol description
-PWMP allows nodes to communicate with the database in a fast and type-safe way. It works in a similar way as MQTT, by utilizing "messages" between the client and the server, but doesn't use a publish-subscribe model, instead just a simple client-server send/receive.
+PWMP allows nodes to communicate with the database in a fast and type-safe way. It uses *messages* to exchange information. The server is responsible for handling these messages and communicating with the database. The client library is used to create and send messages to the server.
+
+A more in-depth description of the protocol can be found [here](pwmp-types/README.md).
 
 READMEs can be found in each crate separately.
 
@@ -21,6 +23,8 @@ VALUES (1);
 ```
 
 # Security
-The server is currently not designed to force secure communication between the database and itself, nor between the nodes and itself. There are ways to add additional protection for the database, for eg. by using both the server and the database in Docker container(s). The database does (and should) **not** be exposed. It should be only accessible by the server itself.
+The current version of the server does not enforce security measures beyond checking if the node is authorized to communicate with the server.
 
-PWMP does not exchange any sensitive data, and the firmware for the nodes requires using encrypted WiFi networks, so all communication is encrypted. Due to this, no additional security is planned as of now.
+It should be noted that no sensitive data is exchanged between the server and the nodes. The server does not store any sensitive data.
+
+Since PWOS only supports encrypted WiFi networks, all communication is encrypted to anyone outside the network.
