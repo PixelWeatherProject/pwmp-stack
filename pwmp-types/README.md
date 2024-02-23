@@ -30,6 +30,57 @@ graph TD;
     Response-.->Settings
 ```
 
+### Introduction message (`Hello`)
+The `Hello` message is the first message sent by the client (node) to the server. It contains the MAC address of the client. The server will respond with an `Ok` message if the client is authorized to communicate with the server.
+
+Message structure:
+```mermaid
+graph LR;
+    Hello-->MAC
+```
+
+### Settings request meeting (`GetSettings`)
+The `GetSettings` message is sent by the client (node) to the server to request the settings for the node. The server will respond with a `Settings` message.
+
+Message structure:
+```mermaid
+graph LR;
+    GetSettings-->SN[Setting names...]
+```
+
+### Settings response message (`Settings`)
+The `Settings` message is sent by the server to the client (node) as a response to a `GetSettings` message. It contains the settings for the node.
+
+Message structure:
+```mermaid
+graph LR;
+    Settings-->SV[Setting values...]
+```
+
+The setting values are in the same order as requested in the `GetSettings` message.
+
+### Results posting message (`PostResults`)
+The `PostResults` message is sent by the client (node) to the server to post measurement results of the node. The server will respond with an `Ok` message if the results were successfully received.
+
+Message structure:
+```mermaid
+graph LR;
+    PostResults-->Temperature
+    PostResults-->Humidity
+    PostResults-->AP[Air Pressure]
+```
+
+### Statistics posting message (`PostStats`)
+The `PostStats` message is sent by the client (node) to the server to post statistics of the node. The server will respond with an `Ok` message if the statistics were successfully received.
+
+Message structure:
+```mermaid
+graph LR;
+    PostStats-->V[Battery Voltage]
+    PostStats-->SSID[WiFi ESSID]
+    PostStats-->RSSI[WiFi RSSI]
+```
+
 # Example communication sequence
 ```mermaid
 sequenceDiagram
@@ -61,3 +112,6 @@ When the client (node) is done communicating with the server, it shall **always*
 2. **Wait** until the server closes the connection.
 
 The [client library](../pwmp-client/) will guarantee the last two two requirements, but not the first one.
+
+# Usage of `Box<T>` types
+Message variants use `Box<>`-ed types for optimizing the size of messages. Boxed types do not have a capacity property, making them up to 8 bytes smaller than their non-boxed counterparts.
