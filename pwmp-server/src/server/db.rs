@@ -7,7 +7,10 @@ use pwmp_types::{
     setting::SettingName,
     NodeId,
 };
-use sqlx::{postgres::PgPoolOptions, Pool, Postgres, Row};
+use sqlx::{
+    postgres::{PgConnectOptions, PgPoolOptions, PgSslMode},
+    Pool, Postgres, Row,
+};
 use tokio::runtime::Runtime;
 
 pub struct DatabaseClient(Runtime, Pool<Postgres>);
@@ -15,18 +18,21 @@ pub struct DatabaseClient(Runtime, Pool<Postgres>);
 impl DatabaseClient {
     pub fn new(config: &Config) -> sqlx::Result<Self> {
         let rt = Runtime::new().unwrap();
+        let mut opts = PgConnectOptions::new()
+            .host(&config.database.host)
+            .port(config.database.port)
+            .username(&config.database.user)
+            .password(&config.database.password)
+            .database(&config.database.name);
+
+        if config.database.ssl {
+            opts = opts.ssl_mode(PgSslMode::Require);
+        }
 
         let pool = rt.block_on(async {
             PgPoolOptions::new()
                 .max_connections(3)
-                .connect(&format!(
-                    "postgres://{}:{}@{}:{}/{}",
-                    config.database.user,
-                    config.database.password,
-                    config.database.host,
-                    config.database.port,
-                    config.database.name
-                ))
+                .connect_with(opts)
                 .await
         })?;
 

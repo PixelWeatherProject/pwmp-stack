@@ -14,9 +14,12 @@ pub mod server_handle;
 
 pub fn server_main() {
     info!("Connecting to database at {}", CONFIG.database.host);
-    let Ok(db) = DatabaseClient::new(&CONFIG) else {
-        error!("Failed to connect to database");
-        exit(1);
+    let db = match DatabaseClient::new(&CONFIG) {
+        Ok(db) => db,
+        Err(why) => {
+            error!("Failed to connect to database: {why}");
+            exit(1);
+        }
     };
 
     let Ok(server) = TcpListener::bind(CONFIG.server_bind_addr()) else {

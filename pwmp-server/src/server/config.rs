@@ -26,6 +26,7 @@ pub struct DatabaseConfig {
     pub user: Box<str>,
     pub password: Box<str>,
     pub name: Box<str>,
+    pub ssl: bool,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -68,6 +69,7 @@ impl Default for DatabaseConfig {
             user: "root".into(),
             password: "root".into(),
             name: "pixelweather".into(),
+            ssl: false,
         }
     }
 }
