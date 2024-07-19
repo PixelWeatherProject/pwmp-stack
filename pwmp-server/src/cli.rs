@@ -18,6 +18,15 @@ pub enum Command {
         #[command(subcommand)]
         command: ServiceCommand,
     },
+    /// Test connection to a PWMP server
+    Test {
+        /// Host to connect to
+        host: String,
+        /// MAC address to authenticate with
+        mac: String,
+        /// Alternative port to use
+        port: Option<u16>,
+    },
 }
 
 #[derive(Debug, Subcommand, Clone, Copy)]

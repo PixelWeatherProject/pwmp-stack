@@ -1292,6 +1292,7 @@ dependencies = [
  "confy",
  "homedir",
  "log",
+ "pwmp-client",
  "pwmp-types",
  "serde",
  "simple_logger",

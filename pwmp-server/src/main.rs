@@ -20,6 +20,7 @@ mod cli;
 mod error;
 mod server;
 mod svcmgr;
+mod tester;
 
 static CONFIG: AlwaysCell<Config> = AlwaysCell::new();
 
@@ -54,6 +55,7 @@ fn main() {
 
     match args.command {
         Some(Command::Service { command }) => svcmgr_main(command),
+        Some(Command::Test { host, mac, port }) => tester::test(host, port, mac),
         None => server_main(),
     }
 }

@@ -28,3 +28,4 @@ always_cell = "0.1.0"
 time = { version = "0.3.31", default-features = false, features = ["macros"] }
 thiserror = "1.0.51"
 users = { version = "0.11.0", default-features = false }
+pwmp-client = { path = "../pwmp-client" }
