@@ -9,7 +9,7 @@ pub fn test(host: String, port: Option<u16>, raw_mac: String) {
         return;
     };
 
-    let full_addr = format!("{}:{}", host, port.unwrap_or(5432));
+    let full_addr = format!("{}:{}", host, port.unwrap_or(55300));
 
     match PwmpClient::new(full_addr, mac) {
         Ok(_) => info!("Client connected successfully!"),
