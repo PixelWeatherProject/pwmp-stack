@@ -4,6 +4,10 @@ This repo contains:
 - [Shared types](pwmp-types/)
 - [PWMP Client library](pwmp-client/)
 
+PixelWeather is a weather station network that collects environment data using "nodes" (a collection of microcontrollers and sensors). This repository contains the implementation of the PixelWeather Messaging Protocol _(PWMP)_, which is used to exchange information between nodes and a server application. You will also find both the server software as well as the client library.
+
+**⚠️ Note that this project is under development. While it is decently stable, is not complete! There are missing and incomplete implementations of features. Production use is highly discouraged!**
+
 # Protocol description
 PWMP allows nodes to communicate with the database in a fast and type-safe way. It uses *messages* to exchange information. The server is responsible for handling these messages and communicating with the database. The client library is used to create and send messages to the server.
 
