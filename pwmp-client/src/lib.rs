@@ -175,7 +175,7 @@ impl PwmpClient {
         }
     }
 
-    fn connected(&mut self) -> bool {
+    fn connected(&self) -> bool {
         if let Ok(amount) = self.0.peek(&mut []) {
             return amount > 0;
         }
