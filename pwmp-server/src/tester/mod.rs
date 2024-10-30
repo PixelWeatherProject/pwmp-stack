@@ -3,6 +3,7 @@ use pwmp_client::PwmpClient;
 use pwmp_types::mac::Mac;
 use std::str::FromStr;
 
+#[allow(clippy::needless_pass_by_value)]
 pub fn test(host: String, port: Option<u16>, raw_mac: String) {
     let Ok(mac) = Mac::from_str(&raw_mac) else {
         error!("Invalid MAC address format");
