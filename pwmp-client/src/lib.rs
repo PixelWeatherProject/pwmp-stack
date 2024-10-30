@@ -31,6 +31,7 @@ pub struct PwmpClient(TcpStream);
 
 impl PwmpClient {
     /// Create a new client by connecting to a PWMP server.
+    ///
     /// # Errors
     /// If the server rejects the client (for eg. if it's unathorized)
     /// an `Err(Error::Reject)` is returned. An error is also returned
@@ -93,6 +94,7 @@ impl PwmpClient {
     }
 
     /// Post node measurements.
+    ///
     /// # Errors
     /// Generic I/O.
     pub fn post_measurements(
@@ -112,6 +114,7 @@ impl PwmpClient {
     }
 
     /// Post node stats.
+    ///
     /// # Errors
     /// Generic I/O.
     pub fn post_stats(
@@ -130,6 +133,10 @@ impl PwmpClient {
         Ok(())
     }
 
+    /// Send a text notification with the specified content.
+    ///
+    /// # Errors
+    /// Generic I/O.
     pub fn send_notification(&mut self, content: &str) -> Result<()> {
         assert!(content.len() <= 64, "Message content too large");
         self.send_request(Request::SendNotification(content.into()))?;
