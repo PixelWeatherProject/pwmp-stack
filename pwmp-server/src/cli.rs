@@ -4,6 +4,7 @@ use std::path::PathBuf;
 #[derive(Debug, Parser)]
 #[command(author, version, about, long_about = None)]
 pub struct Cli {
+    /// Alternative configuration file path
     #[arg(long, value_name = "PATH")]
     pub config: Option<PathBuf>,
 
