@@ -85,7 +85,7 @@ impl Default for LimitsConfig {
 
 impl Config {
     pub fn default_path() -> PathBuf {
-        homedir::get_my_home()
+        homedir::my_home()
             .unwrap()
             .unwrap()
             .join(".pwmp-server/config.yml")
