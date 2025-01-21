@@ -1,3 +1,15 @@
+<hr>
+
+### Deprecation notice
+This repository is deprecated!
+
+The contents of this repository have been broken up to 3 different repositories:
+- [`pwmp-client`](pwmp-client) is now [`pwmp-client`](https://github.com/PixelWeatherProject/pwmp-client)
+- [`pwmp-server`](pwmp-server) is now [`pwmp-server`](https://github.com/PixelWeatherProject/pwmp-server)
+- [`pwmp-types`](pwmp-types) is now [`pwmp-msg`](https://github.com/PixelWeatherProject/pwmp-msg)
+
+<hr>
+
 # PixelWeather Messaging Protocol (PWMP) Stack
 This repo contains:
 - [PWMP Server & CLI](pwmp-server/)
